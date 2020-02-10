@@ -1,6 +1,6 @@
 ﻿namespace Launcher
 {
-    partial class Form2
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -113,7 +113,7 @@
             this.button_Cancel.UseVisualStyleBackColor = true;
             this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
             // 
-            // Form2
+            // SettingsForm
             // 
             this.AcceptButton = this.button_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,7 +124,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button_OK);
             this.MinimumSize = new System.Drawing.Size(500, 225);
-            this.Name = "Form2";
+            this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
             this.groupBox1.ResumeLayout(false);

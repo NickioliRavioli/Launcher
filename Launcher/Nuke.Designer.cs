@@ -1,6 +1,6 @@
 ﻿namespace Launcher
 {
-    partial class Form1
+    partial class NukeLauncherForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NukeLauncherForm));
             this.Run_Button = new System.Windows.Forms.Button();
             this.VersionComboBox = new System.Windows.Forms.ComboBox();
             this.SafemodeCheckBox = new System.Windows.Forms.CheckBox();
@@ -112,7 +112,7 @@
             this.Settings_button.UseVisualStyleBackColor = true;
             this.Settings_button.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form1
+            // NukeLauncherForm
             // 
             this.AcceptButton = this.Run_Button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -129,7 +129,7 @@
             this.KeyPreview = true;
             this.MaximumSize = new System.Drawing.Size(399, 155);
             this.MinimumSize = new System.Drawing.Size(399, 155);
-            this.Name = "Form1";
+            this.Name = "NukeLauncherForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nuke Launcher";
             this.ResumeLayout(false);

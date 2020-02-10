@@ -16,7 +16,18 @@ namespace Launcher
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
+            Launcher mainLauncher = new Launcher();
+
+            if (mainLauncher.currentApplication == Launcher.Applications.Nuke)
+            {
+                Application.Run(mainLauncher.nukeForm);
+            }
+            else if (mainLauncher.currentApplication == Launcher.Applications.Katana)
+            {
+                Application.Run(mainLauncher.katanaForm);
+            }
+
         }
     }
 }

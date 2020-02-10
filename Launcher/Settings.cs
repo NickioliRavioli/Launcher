@@ -13,17 +13,13 @@ using System.Windows.Forms;
 
 namespace Launcher
 {
-    public partial class Form2 : Form
+    public partial class SettingsForm : Form
     {
-        private Form1 mainWindow;
-        
-
-
-
-        public Form2(Form1 form1)
+        Launcher mainLauncher;
+        public SettingsForm(Launcher obj)
         {
             InitializeComponent();
-            mainWindow = form1;
+            mainLauncher = obj;
         }
 
         public void SetTextboxes(string ApplicationInstallDir, string BatchScriptDir)
@@ -36,7 +32,7 @@ namespace Launcher
 
         private void button_OK_Click(object sender, EventArgs e)
         {
-            mainWindow.UpdateRegistryKeys(textbox_ApplicationDir.Text, textbox_BatchScriptDir.Text);
+            mainLauncher.UpdateRegistryKeys(textbox_ApplicationDir.Text, textbox_BatchScriptDir.Text);
             this.Close();
         }
 
