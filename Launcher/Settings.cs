@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-
+/*!!! If you cancel out of this window, next time you open it. it will still be be old settings.
+implement something to revert variables back to what they were before the window was edited*/
 
 namespace Launcher
 {

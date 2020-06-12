@@ -28,14 +28,16 @@ namespace Launcher
         private string ApplicationInstallDir_KeyName = "ApplicationInstallDir";
         public string ApplicationInstallDir_KeyValue;
         private string ApplicationInstallDir_defaultValue = @"C:\Program Files;C:\Program Files (x86)";
+        public List<string> ApplicationInstallDirs_List = new List<string>();
 
         private string BatchScriptDir_KeyName = "BatchScriptDir";
         public string BatchScriptDir_KeyValue;
         private string BatchScriptDir_defaultValue = "";
+        public List<string> BatchScriptDir_List = new List<string>();
 
         private bool InitializeFinished = false;
 
-        List<string> ApplicationInstallDirs_List = new List<string>();
+        
 
 
         public Launcher()
@@ -71,7 +73,7 @@ namespace Launcher
             BatchScriptDir_KeyValue = BatchScriptDir;
 
             ApplicationInstallDirs_List = RegistryKeyToListString(ApplicationInstallDir_KeyValue);
-
+            BatchScriptDir_List = RegistryKeyToListString(BatchScriptDir_KeyValue);
             //update form2 textboxs
             settingsForm.SetTextboxes(ApplicationInstallDir_KeyValue, BatchScriptDir_KeyValue);
             if (currentApplication == Applications.Nuke)
@@ -81,7 +83,7 @@ namespace Launcher
             else if (currentApplication == Applications.Katana)
             {
                 katanaForm.UpdateListOfVersions(ApplicationInstallDirs_List);
-                katanaForm.UpdateBatchScripts(RegistryKeyToListString(BatchScriptDir_KeyValue));
+                katanaForm.UpdateBatchScripts(BatchScriptDir_List);
             }
             
 
@@ -97,6 +99,8 @@ namespace Launcher
             CreateRegistryKey(BatchScriptDir_KeyName, BatchScriptDir_KeyValue);
 
             ApplicationInstallDirs_List = RegistryKeyToListString(ApplicationInstallDir_KeyValue);
+            BatchScriptDir_List = RegistryKeyToListString(BatchScriptDir_KeyValue);
+
             if (currentApplication == Applications.Nuke)
             {
                 nukeForm.UpdateListOfVersions(ApplicationInstallDirs_List);
@@ -104,7 +108,7 @@ namespace Launcher
             else if (currentApplication == Applications.Katana)
             {
                 katanaForm.UpdateListOfVersions(ApplicationInstallDirs_List);
-                katanaForm.UpdateBatchScripts(RegistryKeyToListString(BatchScriptDir_KeyValue));
+                katanaForm.UpdateBatchScripts(BatchScriptDir_List);
             }
         }
 
@@ -143,6 +147,8 @@ namespace Launcher
             key.SetValue(name, value);
             key.Close();
         }
+
+        public System.Collections.ObjectModel.Collection<string> ArgumentList { get; }
 
         /*
         private string findVersion(string value, string programName)
@@ -225,7 +231,10 @@ namespace Launcher
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/c " + command;
+
+            string args = "/c \"\"" + command + "\"\"&pause";
+            startInfo.Arguments = args;
+
             process.StartInfo = startInfo;
             process.EnableRaisingEvents = true;
             process.Start();

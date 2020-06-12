@@ -12,6 +12,14 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 
+
+/*
+ Bug: Spam clicking a BatchScriptCheckListBox item increase memory usage (memory leak?)
+     
+     
+*/
+
+
 namespace Launcher
 {
     public partial class KatanaLauncherForm : Form
@@ -36,8 +44,9 @@ namespace Launcher
             {
                 return;
             }
-            listOfBatchScripts.Clear();
 
+            listOfBatchScripts.Clear();
+            BatchScriptCheckListBox.Items.Clear();
             foreach (string path in Directories)
             {
                 if (path == "")
@@ -52,9 +61,10 @@ namespace Launcher
 
                 string[] array1 = Directory.GetFiles(path);
 
-                foreach (string name in array1)
+                foreach (string batPath in array1)
                 {
-                    listOfVersions.Add(name, name);
+                    string name = batPath.Replace(path + '\\', "");
+                    listOfBatchScripts.Add(name, batPath);
                     BatchScriptCheckListBox.Items.AddRange(new object[] { name });
                 }
             }
@@ -138,25 +148,33 @@ namespace Launcher
             UpdateCommandLabel();
         }
 
-        protected string GetCommand()
+        private string GetBatchScriptsCommands()
         {
-            if (listOfVersions.Count == 0)
-                return null;
-            string batscripts = "";
-            if(BatchScriptCheckListBox.CheckedItems.Count != 0)
+            string batscripts = ""; 
+            string batscriptitem;
+            if (BatchScriptCheckListBox.CheckedItems.Count != 0)
             {
                 foreach (string item in BatchScriptCheckListBox.CheckedItems)
                 {
-                    batscripts += item + '&';
+                    listOfBatchScripts.TryGetValue(item.ToString(), out batscriptitem);
+                    batscripts += batscriptitem + "\"&\""; //Add "&&" to not run the following commands if the first command fails
                 }
             }
+            return batscripts;
+        }
+
+        private string GetCommand()
+        {
+            if (listOfVersions.Count == 0)
+                return null;
 
             string strCmdText;
-            string endingtext = "";
+            string endingtext = ""; //TODO: Residual code from nuke, probably could be removed as this does not apply to Katana
             listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
-
-            return batscripts + '\"' + strCmdText + '\"' + endingtext;
-        }
+            
+            //return '\"' + strCmdText + '\"' + endingtext;
+            return strCmdText;
+    }
 
         private void UpdateCommandLabel()
         {
@@ -174,7 +192,18 @@ namespace Launcher
 
         private void Run_Button_Click(object sender, EventArgs e)
         {
-            mainLauncher.RunCommand(textBox1.Text);
+            string batCommands = GetBatchScriptsCommands();
+            mainLauncher.RunCommand(batCommands + textBox1.Text);
+        }
+
+        private void VersionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateCommandLabel();
+        }
+
+        private void Settings_button_Click(object sender, EventArgs e)
+        {
+            mainLauncher.settingsForm.ShowDialog();
         }
     }
 }

@@ -139,7 +139,7 @@ namespace Launcher
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mainLauncher.RunCommand(textBox1.Text);
+            //HACK: mainLauncher.RunCommand(textBox1.Text);
         }
 
         private void UpdateCommandLabel()
