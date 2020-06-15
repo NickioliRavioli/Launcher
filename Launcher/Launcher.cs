@@ -42,7 +42,7 @@ namespace Launcher
 
         public Launcher()
         {
-            currentApplication = Applications.Katana;
+            currentApplication = Applications.Nuke;
 
             settingsForm = new SettingsForm(this);
             
@@ -232,7 +232,7 @@ namespace Launcher
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             startInfo.FileName = "cmd.exe";
 
-            string args = "/c \"\"" + command + "\"\"&pause";
+            string args = "/c " + command;// + "&pause"; //Stops cmd closing when failing to launch
             startInfo.Arguments = args;
 
             process.StartInfo = startInfo;

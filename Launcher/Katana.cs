@@ -26,7 +26,7 @@ namespace Launcher
     {
         
         private Launcher mainLauncher;
-        private string programName = "Katana";
+        static private string programName = "Katana";
         public Dictionary<string, string> listOfVersions = new Dictionary<string, string>();
         public Dictionary<string, string> listOfBatchScripts = new Dictionary<string, string>();
 
@@ -193,7 +193,8 @@ namespace Launcher
         private void Run_Button_Click(object sender, EventArgs e)
         {
             string batCommands = GetBatchScriptsCommands();
-            mainLauncher.RunCommand(batCommands + textBox1.Text);
+            string command = "\"\"" + batCommands + textBox1.Text + "\"\"";
+            mainLauncher.RunCommand(command);
         }
 
         private void VersionComboBox_SelectedIndexChanged(object sender, EventArgs e)

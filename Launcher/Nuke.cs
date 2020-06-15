@@ -17,7 +17,7 @@ namespace Launcher
     {
         private Launcher mainLauncher;
         private bool InitializeFinished = false;
-        string programName = "Nuke";
+        static string programName = "Nuke";
         public Dictionary<string, string> listOfVersions = new Dictionary<string, string>();
 
 
@@ -139,7 +139,7 @@ namespace Launcher
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //HACK: mainLauncher.RunCommand(textBox1.Text);
+            mainLauncher.RunCommand(textBox1.Text);
         }
 
         private void UpdateCommandLabel()
