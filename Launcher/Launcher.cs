@@ -42,11 +42,11 @@ namespace Launcher
 
         public Launcher()
         {
-            currentApplication = Applications.Nuke;
+            currentApplication = Applications.Katana;
 
             settingsForm = new SettingsForm(this);
             
-            nukeForm = new NukeLauncherForm(this);
+            //nukeForm = new NukeLauncherForm(this);
             katanaForm = new KatanaLauncherForm(this);
             //currentApplicationForm = nukeForm;
 
@@ -234,6 +234,8 @@ namespace Launcher
 
             string args = "/c " + command;// + "&pause"; //Stops cmd closing when failing to launch
             startInfo.Arguments = args;
+
+            Console.WriteLine(args);
 
             process.StartInfo = startInfo;
             process.EnableRaisingEvents = true;

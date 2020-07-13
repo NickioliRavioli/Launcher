@@ -171,16 +171,27 @@ namespace Launcher
             string strCmdText;
             string endingtext = ""; //TODO: Residual code from nuke, probably could be removed as this does not apply to Katana
             listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
-            
-            //return '\"' + strCmdText + '\"' + endingtext;
-            return strCmdText;
+
+            if (forceProfilingCheckbox.Checked)
+            {
+                endingtext += "\" --force-profile";
+
+                if(profilingDirTextBox.Text.Length > 0)
+                {
+                    endingtext += " --profiling-dir=" + "\"" + profilingDirTextBox.Text;
+                }
+            }
+
+            Console.WriteLine(strCmdText + endingtext);
+
+            return strCmdText + endingtext;
     }
 
         private void UpdateCommandLabel()
         {
             if (listOfVersions != null)
             {
-                textBox1.Text = GetCommand();
+                commandTextBox.Text = GetCommand();
             }
         }
 
@@ -193,7 +204,7 @@ namespace Launcher
         private void Run_Button_Click(object sender, EventArgs e)
         {
             string batCommands = GetBatchScriptsCommands();
-            string command = "\"\"" + batCommands + textBox1.Text + "\"\"";
+            string command = "\"\"" + batCommands + commandTextBox.Text + "\"\"";
             mainLauncher.RunCommand(command);
         }
 
@@ -205,6 +216,17 @@ namespace Launcher
         private void Settings_button_Click(object sender, EventArgs e)
         {
             mainLauncher.settingsForm.ShowDialog();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateCommandLabel();
+            profilingDirTextBox.Visible = !profilingDirTextBox.Visible;
+        }
+
+        private void profilingDirTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateCommandLabel();
         }
     }
 }
