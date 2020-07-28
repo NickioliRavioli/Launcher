@@ -46,7 +46,7 @@ namespace Launcher
 
             settingsForm = new SettingsForm(this);
             
-            //nukeForm = new NukeLauncherForm(this);
+            nukeForm = new NukeLauncherForm(this);
             katanaForm = new KatanaLauncherForm(this);
             //currentApplicationForm = nukeForm;
 
