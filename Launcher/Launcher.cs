@@ -230,9 +230,18 @@ namespace Launcher
             }
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            if(currentApplication == Applications.Katana)
+                startInfo.EnvironmentVariables["KATANA_ROOT"] = katanaForm.SetEnvironmentVar();
+            else if(currentApplication == Applications.Nuke)
+                startInfo.EnvironmentVariables["NUKE_ROOT"] = nukeForm.SetEnvironmentVar();
+
+            // Required for EnvironmentVariables to be set
+            startInfo.UseShellExecute = false;
+
             startInfo.FileName = "cmd.exe";
 
             string args = "/c " + command;// + "&pause"; //Stops cmd closing when failing to launch
+
             startInfo.Arguments = args;
 
             Console.WriteLine(args);

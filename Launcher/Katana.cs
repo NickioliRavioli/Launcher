@@ -27,7 +27,7 @@ namespace Launcher
         
         private Launcher mainLauncher;
         static private string programName = "Katana";
-        public Dictionary<string, string> listOfVersions = new Dictionary<string, string>();
+        public Dictionary<string, (string, string)> listOfVersions = new Dictionary<string, (string, string)>();
         public Dictionary<string, string> listOfBatchScripts = new Dictionary<string, string>();
 
         public KatanaLauncherForm(Launcher obj)
@@ -85,7 +85,8 @@ namespace Launcher
             List<string> singleDigit = new List<string>();
             List<string> doubleDigit = new List<string>();
             List<string> SortedOrder = new List<string>();
-            var map = new Dictionary<string, string>();
+            
+            var map = new Dictionary<string, (string, string)>();
 
             foreach (string path in Directories)
             {
@@ -106,10 +107,11 @@ namespace Launcher
                     //this.checkedListBox1.Items.AddRange(new object[] { name });
                     if (name.Contains(programName))
                     {
-
+                        string environmentVar = name;
                         string version = mainLauncher.findVersion(name, programName);
                         string exePath = name + '\\' + "bin\\katanabin.exe";
-                        map.Add(version, exePath);
+
+                        map.Add(version, (exePath, environmentVar));
 
                         string input = version.Split('.').First();
                         if (Int32.Parse(input) < 10)
@@ -150,7 +152,7 @@ namespace Launcher
 
         private string GetBatchScriptsCommands()
         {
-            string batscripts = ""; 
+            string batscripts = "";
             string batscriptitem;
             if (BatchScriptCheckListBox.CheckedItems.Count != 0)
             {
@@ -168,7 +170,7 @@ namespace Launcher
             if (listOfVersions.Count == 0)
                 return null;
 
-            string strCmdText;
+            (string, string) strCmdText;
             string endingtext = ""; //TODO: Residual code from nuke, probably could be removed as this does not apply to Katana
             listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
 
@@ -182,10 +184,21 @@ namespace Launcher
                 }
             }
 
-            Console.WriteLine(strCmdText + endingtext);
+            Console.WriteLine(strCmdText.Item1 + endingtext);
 
-            return strCmdText + endingtext;
-    }
+            return strCmdText.Item1 + endingtext;
+        }
+
+        public string SetEnvironmentVar()
+        {
+            if (listOfVersions.Count == 0)
+                return null;
+
+            (string, string) strCmdText;
+            listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
+
+            return strCmdText.Item2;
+        }
 
         private void UpdateCommandLabel()
         {

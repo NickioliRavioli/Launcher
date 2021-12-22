@@ -18,7 +18,7 @@ namespace Launcher
         private Launcher mainLauncher;
         private bool InitializeFinished = false;
         static string programName = "Nuke";
-        public Dictionary<string, string> listOfVersions = new Dictionary<string, string>();
+        public Dictionary<string, (string, string)> listOfVersions = new Dictionary<string, (string, string)>();
 
 
         public NukeLauncherForm(Launcher obj)
@@ -44,7 +44,7 @@ namespace Launcher
             List<string> singleDigit = new List<string>();
             List<string> doubleDigit = new List<string>();
             List<string> SortedOrder = new List<string>();
-            var map = new Dictionary<string, string>();
+            var map = new Dictionary<string, (string, string)>();
 
             foreach (string path in Directories)
             {
@@ -65,11 +65,11 @@ namespace Launcher
                     //this.checkedListBox1.Items.AddRange(new object[] { name });
                     if (name.Contains(programName))
                     {
-
+                        string environmentVar = name;
                         string version = mainLauncher.findVersion(name, programName);
                         string exePath = name + '\\' + programName + version.Split('v').First();
                         exePath += ".exe";
-                        map.Add(version, exePath);
+                        map.Add(version, (exePath, environmentVar));
 
                         string input = version.Split('.').First();
                         if (Int32.Parse(input) < 10)
@@ -114,7 +114,7 @@ namespace Launcher
             if (listOfVersions.Count == 0)
                 return null;
 
-            string strCmdText;
+            (string, string) strCmdText;
             string endingtext = "";
             listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
 
@@ -134,7 +134,19 @@ namespace Launcher
                 endingtext += " -V";
             }
 
-            return '\"' + strCmdText + '\"' + endingtext;
+            return '\"' + strCmdText.Item1 + '\"' + endingtext;
+        }
+
+        public string SetEnvironmentVar()
+        {
+            if (listOfVersions.Count == 0)
+                return null;
+
+            (string, string) strCmdText;
+            listOfVersions.TryGetValue(VersionComboBox.SelectedItem.ToString(), out strCmdText);
+
+            return strCmdText.Item2;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
